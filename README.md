@@ -125,9 +125,9 @@ EMAIL_API_KEY=your_email_service_key
 SESSION_SECRET=your_session_secret
 ```
 
-## 項目結構
+## 項目結構 (Monorepo)
 
-### 前端 (esgen-fresh/)
+### 前端 (根目錄)
 ```
 src/
 ├── app/
@@ -135,36 +135,37 @@ src/
 │   ├── about/page.tsx        # 關於頁面
 │   ├── generate/page.tsx     # 報告生成表單
 │   ├── preview/page.tsx      # 報告預覽頁面 (待開發)
-│   ├── auth/                 # 登入/註冊頁面 (待開發)
-│   ├── dashboard/            # 用戶儀表板 (待開發)
+│   ├── auth/                 # 登入/註冊頁面 ✅
+│   ├── dashboard/            # 用戶儀表板 ✅
 │   └── layout.tsx            # 根布局
 ├── components/               # 可重用組件
-│   ├── ui/                   # 基礎UI組件
+│   ├── ui/                   # 基礎UI組件 ✅
 │   ├── forms/                # 表單組件
 │   └── reports/              # 報告相關組件
 ├── lib/                      # 工具函數
-│   ├── supabase.ts           # Supabase客戶端
-│   ├── openai.ts             # OpenAI集成
-│   └── airwallex.ts          # 支付集成
-└── types/                    # TypeScript類型定義
+│   ├── supabase.ts           # Supabase客戶端 ✅
+│   ├── openai.ts             # OpenAI集成 (待開發)
+│   └── airwallex.ts          # 支付集成 (待開發)
+├── contexts/
+│   └── AuthContext.tsx       # 認證上下文 ✅
+└── types/
+    └── database.ts           # TypeScript類型定義 ✅
 ```
 
-### 後端 (esgen-backend/)
+### 後端 (backend/)
 ```
-├── keystone.ts               # Keystone配置
-├── schema/                   # 數據模型
-│   ├── User.ts              # 用戶模型
-│   ├── Report.ts            # 報告模型
-│   └── Payment.ts           # 支付記錄
-├── services/                 # 業務邏輯
-│   ├── reportGenerator.ts   # AI報告生成
-│   ├── pdfGenerator.ts      # PDF生成
-│   └── emailService.ts      # 電郵服務
-└── routes/                   # API路由
-    ├── auth.ts              # 認證API
-    ├── reports.ts           # 報告API
-    └── payments.ts          # 支付API
+backend/
+├── keystone.ts               # Keystone配置 ✅
+├── schema.ts                 # 數據模型 (User/Report/Payment) ✅
+├── auth.ts                   # 認證配置 ✅
+├── package.json              # 依賴和腳本 ✅
+├── .env                      # 環境變量 ✅
+└── tsconfig.json             # TypeScript配置 ✅
 ```
+
+### 部署配置
+- **前端**: Netlify → `esgenio.netlify.app` ✅
+- **後端**: Render → (使用 `backend/` 目錄作為根路徑)
 
 ## 開發里程碑與行動項目
 
