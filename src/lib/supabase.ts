@@ -12,7 +12,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 // Helper functions for authentication
 export const authHelpers = {
-  signUp: async (email: string, password: string, userData?: any) => {
+  signUp: async (email: string, password: string, userData?: Record<string, unknown>) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -52,7 +52,7 @@ export const authHelpers = {
 // Database helpers
 export const dbHelpers = {
   // User operations
-  createUser: async (userData: any) => {
+  createUser: async (userData: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('users')
       .insert([userData])
@@ -70,7 +70,7 @@ export const dbHelpers = {
   },
 
   // Report operations
-  createReport: async (reportData: any) => {
+  createReport: async (reportData: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('reports')
       .insert([reportData])
@@ -87,7 +87,7 @@ export const dbHelpers = {
     return { data, error }
   },
 
-  updateReport: async (id: string, updates: any) => {
+  updateReport: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('reports')
       .update(updates)
@@ -97,7 +97,7 @@ export const dbHelpers = {
   },
 
   // Payment operations
-  createPayment: async (paymentData: any) => {
+  createPayment: async (paymentData: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('payments')
       .insert([paymentData])

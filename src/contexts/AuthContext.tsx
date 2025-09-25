@@ -6,10 +6,10 @@ import { supabase, authHelpers } from '@/lib/supabase'
 import { AuthSession, AuthUser } from '@/types/database'
 
 interface AuthContextType extends AuthSession {
-  signIn: (email: string, password: string) => Promise<{ error: any }>
-  signUp: (email: string, password: string, userData?: any) => Promise<{ error: any }>
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>
+  signUp: (email: string, password: string, userData?: Record<string, unknown>) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
-  resetPassword: (email: string) => Promise<{ error: any }>
+  resetPassword: (email: string) => Promise<{ error: Error | null }>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null)
     
     try {
-      const { data, error } = await authHelpers.signIn(email, password)
+      const { error } = await authHelpers.signIn(email, password)
       
       if (error) {
         setError(error.message)
@@ -91,20 +91,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       const errorMessage = 'An unexpected error occurred during sign in'
       setError(errorMessage)
-      return { error: { message: errorMessage } }
+      return { error: new Error(errorMessage) }
     } finally {
       setLoading(false)
     }
   }
 
-  const signUp = async (email: string, password: string, userData = {}) => {
+  const signUp = async (email: string, password: string, userData: Record<string, unknown> = {}) => {
     setLoading(true)
     setError(null)
     
     try {
-      const { data, error } = await authHelpers.signUp(email, password, {
-        name: userData.name || email,
-        companyName: userData.companyName,
+      const { error } = await authHelpers.signUp(email, password, {
+        name: (userData.name as string) || email,
+        companyName: userData.companyName as string,
         subscriptionStatus: 'free',
         ...userData,
       })
@@ -119,7 +119,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       const errorMessage = 'An unexpected error occurred during sign up'
       setError(errorMessage)
-      return { error: { message: errorMessage } }
+      return { error: new Error(errorMessage) }
     } finally {
       setLoading(false)
     }
@@ -137,8 +137,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setUser(null)
       }
-    } catch (err) {
-      console.error('Error signing out:', err)
+    } catch (error) {
+      console.error('Error signing out:', error)
       setError('Failed to sign out')
     } finally {
       setLoading(false)
@@ -149,17 +149,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null)
     
     try {
-      const { data, error } = await authHelpers.resetPassword(email)
+      const { error } = await authHelpers.resetPassword(email)
       
       if (error) {
         setError(error.message)
       }
       
       return { error }
-    } catch (err) {
+    } catch (error) {
       const errorMessage = 'Failed to send password reset email'
       setError(errorMessage)
-      return { error: { message: errorMessage } }
+      return { error: new Error(errorMessage) }
     }
   }
 

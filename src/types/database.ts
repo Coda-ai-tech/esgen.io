@@ -70,7 +70,7 @@ export interface Payment {
   paymentMethod?: string
   
   // Metadata
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
   
   // Relationships
   userId: string
@@ -106,7 +106,7 @@ export interface ESGFormData {
 }
 
 // API Response types
-export interface APIResponse<T = any> {
+export interface APIResponse<T = unknown> {
   success: boolean
   data?: T
   error?: string
