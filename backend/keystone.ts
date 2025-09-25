@@ -30,7 +30,8 @@ export default withAuth(
           'http://localhost:3000', // Next.js dev
           'http://localhost:3002', // Next.js dev (alt port)
           'http://localhost:3003', // Next.js dev (alt port)
-          'https://esgen.io', // Production frontend
+          'https://esgenio.netlify.app', // Production frontend (Netlify)
+          'https://esgen.io', // Custom domain (future)
           /\.netlify\.app$/, // Netlify preview URLs
         ],
         credentials: true,
