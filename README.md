@@ -47,15 +47,45 @@ ESGEN是為香港企業打造的ESG生態系統，讓公司能夠在30分鐘內�
 
 ## 開發設置
 
+### 快速啟動 (團隊開發)
+
 ```bash
-# 安裝依賴
+# 1. 克隆倉庫
+git clone https://github.com/Coda-ai-tech/esgen.io.git
+cd esgen.io
+
+# 2. 前端設置
+cd esgen-fresh
 npm install
-
-# 啟動開發服務器
+# 配置 .env.local (Supabase 密鑰已設置)
 npm run dev
+# → http://localhost:3000
 
-# 建構生產版本
-npm run build
+# 3. 後端設置 (新終端窗口)
+cd ../esgen-backend  
+npm install
+# 配置 .env (需要替換 YOUR_DB_PASSWORD)
+npm run dev
+# → http://localhost:3001 (Keystone CMS)
+```
+
+### 環境要求
+- Node.js 18+
+- npm 或 yarn
+- Supabase 帳戶 (已配置)
+- 網絡連接 (AI API 調用)
+
+### 開發指令
+
+```bash
+# 前端開發
+npm run dev          # 啟動開發服務器
+npm run build        # 建構生產版本
+npm run lint         # 代碼檢查
+
+# 後端開發  
+npm run dev          # 啟動 Keystone CMS
+npm run build        # 建構後端
 ```
 
 ## 環境變量
@@ -228,18 +258,46 @@ src/
   - 系統監控 (Uptime)
 
 ## 當前狀態
-- ✅ **已完成**: 
-  - 傳統中文著陸頁面
-  - 關於頁面
-  - 4步驟報告生成表單
-  - GitHub倉庫設置
 
-- 🔄 **進行中**: 
-  - 技術架構文檔更新
+### ✅ **Phase 1 已完成** (2024-09-25)
 
-- ⏳ **待開始**: 
-  - Supabase項目創建
-  - Keystone.js後端開發
+#### Backend Infrastructure
+- ✅ **Supabase項目創建** - 數據庫實例配置完成，連接密鑰已設置
+- ✅ **Keystone.js後端搭建** - 完整CMS系統，運行於 http://localhost:3001
+- ✅ **數據模型設計** - User/Report/Payment 三大核心模型
+  - User: 用戶資料、公司信息、訂閱狀態、語言偏好
+  - Report: ESG表單數據、AI生成內容、支付狀態、文件引用
+  - Payment: Airwallex交易追蹤、金額、狀態管理
+
+#### Frontend Integration  
+- ✅ **Supabase客戶端集成** - SDK安裝配置，環境變量設置
+- ✅ **認證系統** - 完整登入/註冊流程，支持傳統中文界面
+  - 登入頁面: `/auth/login`
+  - 註冊頁面: `/auth/register` 
+  - 用戶儀表板: `/dashboard` (受保護路由)
+- ✅ **TypeScript類型定義** - 完整數據庫和API響應類型
+- ✅ **React Context** - 全局認證狀態管理
+
+#### 開發基礎設施
+- ✅ **前端頁面** - 著陸頁、關於頁面、生成表單、認證頁面
+- ✅ **後端CMS** - Keystone管理界面，數據庫管理
+- ✅ **Git倉庫** - 代碼版本控制，團隊協作就緒
+
+### 🚀 **當前可用功能**
+- 💻 **前端**: http://localhost:3000 (Next.js + Tailwind)
+- 🎛️ **後端CMS**: http://localhost:3001 (Keystone.js 管理面板)
+- 🔐 **用戶認證**: 註冊、登入、儀表板
+- 📊 **數據管理**: 通過Keystone CMS管理用戶和報告
+
+### 🔄 **Phase 2 進行中**: AI 報告生成 (預計第3-4週)
+- ⏳ **OpenAI集成** - 報告生成引擎配置
+- ⏳ **PDF生成系統** - 專業報告模板設計
+- ⏳ **預覽頁面開發** - 免費預覽/付費完整報告
+
+### ⏳ **Phase 3 待開始**: 支付和交付 (預計第5-6週) 
+- ⏳ **Airwallex支付集成**
+- ⏳ **電郵系統和PDF交付**
+- ⏳ **用戶儀表板增強**
 
 ## 授權
 
