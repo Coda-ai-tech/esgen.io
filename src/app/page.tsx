@@ -8,10 +8,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">ESGEN</h1>
+              <img src="/esgenlogo.png" alt="ESGEN Logo" className="h-7 w-auto" />
               <span className="ml-3 text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">AI ESG 報告生成器</span>
             </div>
             <nav className="hidden md:flex space-x-8">

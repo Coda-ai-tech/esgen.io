@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ArrowRight, ArrowLeft, FileText, TrendingUp, AlertCircle, Target, Download, Sparkles, X, Maximize2, Minimize2 } from 'lucide-react'
+import ESGAnalysisDashboard from './ESGAnalysisDashboard'
 
 interface Message {
   id: string
@@ -35,6 +36,7 @@ export default function Chatbot() {
       timestamp: new Date()
     }
   ])
+  const [showInitialOptions, setShowInitialOptions] = useState(true)
   const [inputText, setInputText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   
@@ -51,6 +53,61 @@ export default function Chatbot() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  const handleOptionClick = (option: number) => {
+    setShowInitialOptions(false)
+    
+    const optionTexts = [
+      '開始1分鐘快速ESG評估',
+      '尋找合適的ESG顧問',
+      '獲取我的公司ESG報告或認證'
+    ]
+    
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: optionTexts[option - 1],
+      isUser: true,
+      timestamp: new Date()
+    }
+    
+    setMessages(prev => [...prev, userMessage])
+    setIsTyping(true)
+    
+    setTimeout(() => {
+      if (option === 1) {
+        // Start assessment
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: '好的！我將為您開始快速ESG評估。這將幫助您了解當前的ESG狀況並獲得個性化建議。',
+          isUser: false,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, aiResponse])
+        setIsTyping(false)
+        startAssessment()
+      } else if (option === 2) {
+        // Find consultant
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: '我們擁有100+專業ESG顧問團隊。請聯繫我們：\n📱 電話：+852 2915 6660\n💬 WhatsApp：+852 5478 8508\n✉️ 電郵：renas.hung@codaai.tech\n\n我們的顧問將根據您的行業和需求，為您匹配最合適的專家。',
+          isUser: false,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, aiResponse])
+        setIsTyping(false)
+      } else if (option === 3) {
+        // Get report/certification
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: 'ESGEN提供符合ISO 17025國際認證的ESG報告服務。我們的報告包括：\n\n✓ 全面的ESG評分和分析\n✓ SWOT分析和改進建議\n✓ 行業對標和最佳實踐\n✓ 符合GRI、TCFD、SASB等框架\n\n您想現在開始評估嗎？或者聯繫我們的顧問了解更多詳情。',
+          isUser: false,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, aiResponse])
+        setIsTyping(false)
+      }
+    }, 1000)
+  }
 
   const handleSendMessage = async () => {
     if (!inputText.trim()) return
@@ -77,7 +134,7 @@ export default function Chatbot() {
         }
         setMessages(prev => [...prev, aiResponse])
         setIsTyping(false)
-        setChatMode("assessment")
+        startAssessment()
       }, 1000)
       return
     }
@@ -336,14 +393,12 @@ export default function Chatbot() {
       {!isFullScreen && (
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-2xl hover:from-emerald-600 hover:to-teal-600 transform hover:scale-110 transition-all duration-300 z-50 flex items-center justify-center"
+          className="fixed bottom-6 right-6 w-16 h-16 bg-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-50 flex items-center justify-center p-2"
         >
           {isOpen ? (
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-emerald-500" />
           ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
+            <img src="/ESGuin Logo_chat.png" alt="ESGuin Chat" className="w-full h-full object-contain" />
           )}
         </button>
       )}
@@ -355,11 +410,11 @@ export default function Chatbot() {
           <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-4 rounded-t-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white font-bold text-sm">E</span>
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3 p-1">
+                  <img src="/esguin.png" alt="ESGuin" className="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">ESGEN AI助手</h3>
+                  <h3 className="font-semibold">ESGEN AI助手 ESGuin</h3>
                   <p className="text-xs text-emerald-100">在線 • 即時回應</p>
                 </div>
               </div>
@@ -435,28 +490,54 @@ export default function Chatbot() {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* Input */}
-                <div className="p-4 border-t border-gray-200">
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      value={inputText}
-                      onChange={(e) => setInputText(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="輸入您的問題..."
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                    />
+                {/* Initial Options */}
+                {showInitialOptions && (
+                  <div className="px-4 pb-4 space-y-2">
                     <button
-                      onClick={handleSendMessage}
-                      disabled={!inputText.trim()}
-                      className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      onClick={() => handleOptionClick(1)}
+                      className="w-full text-left px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 shadow-md hover:shadow-lg font-medium"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
+                      1. 開始1分鐘快速ESG評估
+                    </button>
+                    <button
+                      onClick={() => handleOptionClick(2)}
+                      className="w-full text-left px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 shadow-md hover:shadow-lg border-2 border-emerald-200 font-medium"
+                    >
+                      2. 尋找合適的ESG顧問
+                    </button>
+                    <button
+                      onClick={() => handleOptionClick(3)}
+                      className="w-full text-left px-4 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 shadow-md hover:shadow-lg border-2 border-emerald-200 font-medium"
+                    >
+                      3. 獲取我的公司ESG報告或認證
                     </button>
                   </div>
-                </div>
+                )}
+
+                {/* Input */}
+                {!showInitialOptions && (
+                  <div className="p-4 border-t border-gray-200">
+                    <div className="flex space-x-2">
+                      <input
+                        type="text"
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="輸入您的問題..."
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      />
+                      <button
+                        onClick={handleSendMessage}
+                        disabled={!inputText.trim()}
+                        className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 
@@ -606,6 +687,12 @@ export default function Chatbot() {
             )}
 
             {chatMode === "report" && (
+              <div className="h-full overflow-y-auto">
+                <ESGAnalysisDashboard answers={answers} onRestart={handleRestart} />
+              </div>
+            )}
+
+            {chatMode === "report_old" && (
               <div className="p-6">
                 <div className="max-w-5xl mx-auto">
                   {/* Header */}

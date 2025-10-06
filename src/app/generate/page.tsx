@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { esgQuestions } from '@/data/esgQuestions';
+import { generateRandomAssessment } from '@/lib/questionSelector';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,9 +10,12 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles, RefreshCw } from 'lucide-react';
 
 export default function GeneratePage() {
+  // Generate random questions on mount (15 questions: 6 environmental, 6 social, 3 governance)
+  const esgQuestions = useMemo(() => generateRandomAssessment(), []);
+  
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, any>>({});
   const [showWelcome, setShowWelcome] = useState(true);
@@ -173,10 +176,7 @@ export default function GeneratePage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-20">
               <Link href="/" className="flex items-center">
-                <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
-                  <span className="text-white font-bold text-lg">E</span>
-                </div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">ESGEN</h1>
+                <img src="/esgenlogo.png" alt="ESGEN Logo" className="h-7 w-auto" />
               </Link>
             </div>
           </div>

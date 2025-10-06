@@ -8,10 +8,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">ESGEN</h1>
+              <img src="/esgenlogo.png" alt="ESGEN Logo" className="h-7 w-auto" />
             </Link>
             <nav className="hidden md:flex space-x-8">
               <Link href="/#technology" className="text-gray-700 hover:text-emerald-600 font-medium transition-colors">AI 技術</Link>

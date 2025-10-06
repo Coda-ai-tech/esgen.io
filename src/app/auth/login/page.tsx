@@ -39,11 +39,8 @@ export default function LoginPage() {
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center">
-            <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
-              <span className="text-white font-bold text-xl">E</span>
-            </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">ESGEN</h1>
+          <Link href="/" className="inline-flex items-center justify-center">
+            <img src="/esgenlogo.png" alt="ESGEN Logo" className="h-7 w-auto" />
           </Link>
           <p className="text-gray-600 mt-4">登入您的帳戶以繼續</p>
         </div>
